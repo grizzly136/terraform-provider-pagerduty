@@ -1,0 +1,9 @@
+1.Does the applicaion provide APIs for user management 
+-> Yes they provider apis for user documentation
+->User doucumentiaon link "https://developer.pagerduty.com/api-reference/reference/REST/openapiv3.json/paths/~1users/post"
+
+2.Are APIs for user management available in our plan
+->Yes they are free for developer but have to pay for commercial use
+
+3.How does the API do authentication - basic, static token, JWT, Oauth 
+->Static token
