@@ -79,19 +79,19 @@ terraform {
 }
 
 provider "pagerduty" {
-  token = "Token token=[Token]"
+  token = "Token token=examepletoken"
 }
 data "pagerduty_user_data" "name" {
-  id = [userid]
+  id = "PDH5H9D"
 }
 output "user" {
   value = data.pagerduty_user_data.name
 }
  resource "pagerduty_user_resource" "test1" {
- name  =[Name of he user ]
-   email = [Email of user]
-   type  = [Type]
-   role  = [ROLE of user]
+   name  = "testname"
+   email = "test@gmail.com"
+   type  = "user"
+   role  = "admin"
  }
  output "resource_test" {
    value = pagerduty_user_resource.test1
