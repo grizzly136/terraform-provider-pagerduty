@@ -8,7 +8,7 @@
 * [Pagerduty Developer account](https://www.pagerduty.com/)
 
 ## Initialize pagerduty Provider
-1. Clone the repository  to from "https://github.com/tharunforu/pagerduty/tree/master"<br>
+1. Clone the repository  to from "https://github.com/tharunforu/terraform-provider-pagerduty"<br>
 2. Add the Token in `main.tf` in provider for api acess<br>
 3. Run the following commands :
  ```
@@ -107,7 +107,7 @@ output "user" {
 
 ## Argument Reference
 
-* `email` (string)     - The email id associated with the user account.
+* `email` (string) - The email id associated with the user account.
 * `name` (string) - name of the User.
 * `type` (string) - type of the User.
 * `role` (string) -  Job role of user in organization. 
