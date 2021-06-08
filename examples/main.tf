@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "pagerduty" {
-  token = "Token token=[Token]"
+  token = "Token token="
 }
 data "pagerduty_user_data" "name" {
   id = "PQXBTF7"
