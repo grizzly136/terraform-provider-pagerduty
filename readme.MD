@@ -1,6 +1,6 @@
 ## Pagerduty Terraform Provider
 
-* This terraform provider allows to perform Create ,Read ,Update,delete and Import of pagerduty Users. 
+* This terraform provider allows to perform Create, Read, Update, Delete and Import of pagerduty Users. 
 * To fetch and import a user server generated User ID is needed.
 ## Requirements 
 * [Go](https://golang.org/doc/install) <br>
