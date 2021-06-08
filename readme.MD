@@ -8,7 +8,7 @@
 * [Pagerduty Developer account](https://www.pagerduty.com/)
 
 ## Initialize pagerduty Provider
-1. Clone the repository  to from "https://github.com/tharunforu/terraform-provider-pagerduty"<br>
+1. Clone the repository from "https://github.com/tharunforu/terraform-provider-pagerduty"<br>
 2. Add the Token in `main.tf` in provider for api acess<br>
 3. Run the following commands :
  ```
