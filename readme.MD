@@ -8,7 +8,7 @@
 ### setup
 * create a [pagerduty](https://www.pagerduty.com/) developer account
 ### Authentication
-* Api uses the basic token
+* Api uses the basic token for authentication
 * Login to your developer account.
 * In the dashboard go to `Integrations -> Api acess keys -> click on  **create new api key**` <br>
 ## Building The Provider
