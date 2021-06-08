@@ -45,8 +45,8 @@ For eg. `mkdir -p ~/.terraform.d/plugins/hashicorp.com/edu/pagerduty/1.0/windows
 * In the provider block add api token in the respective field
 ### basic terraform commands
 * `terraform init` initializes the plugins
-* `terraform plan`  
-* `terraform apply` 
+* `terraform plan` suggests if any changes required
+* `terraform apply` executes the code
 ### Create User
 1. Add the user email, name, type and role in the respective field 
 2. You will see that a user has been successfully created after executing basic terraform commands.
