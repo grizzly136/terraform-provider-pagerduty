@@ -1,16 +1,15 @@
-## Pagerduty Terraform Provider
-
 * This terraform provider allows to perform Create, Read, Update, Delete and Import of pagerduty Users. 
 * To fetch and import a user server generated User ID is needed.
 ## Requirements 
-* [Go](https://golang.org/doc/install) <br>
-* [Terraform](https://www.terraform.io/downloads.html)  <br/>
-* [Pagerduty Developer account](https://www.pagerduty.com/)
-
+* [Go](https://golang.org/doc/install) >= 1.16 (To build the provider plugin)<br>
+* [Terraform](https://www.terraform.io/downloads.html) >= 0.13.x <br/>
+* Application:[Pagerduty Developer account](https://www.pagerduty.com/)
+## Application setup 
+### setup
+* create a [pagerduty](https://www.pagerduty.com/) developer account 
 ## Initialize pagerduty Provider
 1. Clone the repository from "https://github.com/tharunforu/terraform-provider-pagerduty"<br>
-2. Add the Token in `main.tf` in provider for api acess<br>
-3. Run the following commands :
+2. Run the following commands :
  ```
 go mod init terraform-provider-pagerduty
 go mod tidy
@@ -41,7 +40,7 @@ For eg. `mkdir -p ~/.terraform.d/plugins/hashicorp.com/edu/pagerduty/1.0/windows
 ## Run the Terraform provider
 
 ### Authentication
-1. Add the API TOKEN in  provider in  `main.tf` <br>
+1. Add the API TOKEN in  provider <br>
 
 #### Create User
 1. Add the user email,  name,type,and role in the respective field in `main.tf`
