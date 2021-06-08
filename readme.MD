@@ -72,8 +72,8 @@ eg :  URL:……users/PDFJIJD  here PDFJIJD is the user id of the user
 terraform {
   required_providers {
     pagerduty = {
-      version = "1.0"
-      source  = "tharun/edu/pagerduty"
+      version = "1.0.8"
+      source  = "tharunforu/pagerduty"
     }
   }
 }
