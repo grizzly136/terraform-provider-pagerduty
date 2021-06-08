@@ -6,17 +6,20 @@
 * Application:[Pagerduty Developer account](https://www.pagerduty.com/)
 ## Application setup 
 ### setup
-* create a [pagerduty](https://www.pagerduty.com/) developer account 
-## Initialize pagerduty Provider
-1. Clone the repository from "https://github.com/tharunforu/terraform-provider-pagerduty"<br>
+* create a [pagerduty](https://www.pagerduty.com/) developer account
+### Authentication
+* Login to your developer account.
+* In the dashboard go to `Integrations -> Api acess keys -> click on  **create new api key**` <br>
+## Building The Provider
+1. Clone the repository "https://github.com/tharunforu/terraform-provider-pagerduty"<br>
 2. Run the following commands :
  ```
 go mod init terraform-provider-pagerduty
 go mod tidy
 ```
-4. Run `go mod vendor` to create a vendor directory that contains all the provider's dependencies. <br>
+3. Run `go mod vendor` to create a vendor directory that contains all the provider's dependencies. <br>
 
-## Installation
+## Managing plugins for terraform
 1. Run the following command to create a vendor subdirectory which will comprise of  all provider dependencies. <br>
 ```
 ~/.terraform.d/plugins/${host_name}/${namespace}/${type}/${version}/${target}
@@ -37,39 +40,31 @@ For eg. `mkdir -p ~/.terraform.d/plugins/hashicorp.com/edu/pagerduty/1.0/windows
 2. move binary `~/.terraform.d/plugins/[architecture name]/`
 
 
-## Run the Terraform provider
+## Working with terraform
+### application credential integration in terraform
+* In the provider block add api token in the respective field
+### basic terraform commands
+* `terraform init` initializes the plugins
+* `terraform plan`  
+* `terraform apply` 
+### Create User
+1. Add the user email, name, type and role in the respective field 
+2. You will see that a user has been successfully created after executing basic terraform commands.
 
-### Authentication
-1. Add the API TOKEN in  provider <br>
+### Update the user
+Update the data of the user file and apply using `terraform apply`
 
-#### Create User
-1. Add the user email,  name,type,and role in the respective field in `main.tf`
-2. Initialize the terraform provider `terraform init`
-3. Check the changes applicable using `terraform plan` and apply using `terraform apply`
-4. You will see that a user has been successfully created.
+### Read the User Data
+Add data and output blocks and run basic terraform commands
 
-#### Update the user
-Update the data of the user in the `main.tf` file and apply using `terraform apply`
-
-#### Read the User Data
-Add data and output blocks in the `main.tf` file after that add email field  and user email  and run `terraform plan` to read user data
-
-#### Delete the user
-Run `terraform destroy` to delete all the users in `main.tf` or just comment out the unwated user and run `terrafrom apply`
-#### Import a User Data
-1. Write manually a resource configuration block for the User in `main.tf`, to which the imported object will be mapped or define the empty resource block.
+### Delete the user
+Run `terraform destroy` to delete all the users or just comment out the unwated user resource block and run basic terraform commands
+### Import a User Data
+1. Write manually a resource configuration block for the User, to which the imported object will be mapped or define the empty resource block.
 2. Run the command `terraform pagerduty_resource_user.import “[USER_ID]”`
 * To get the user Id go to pagerduty dashboard in people select the users then select a particular user in the url last 7 digits will be the user id
 eg :  URL:……users/PDFJIJD  here PDFJIJD is the user id of the user
 3. Check for the attributes in the `.tfstate` file and fill them accordingly in the resource block.
-
-
-### Testing the Provider
-1. Navigate to the test file directory.
-2. Run command `go test` for unit testing and for acceptance testing run command `TF_ACC=1 go test` . These commands will give combined test results for the execution or errors if any failure occurs.
-3. If you want to see test result of each test function individually while running test in a single go, run command `go test -v`
-4. To check test cover run `go test -cover`
-
 
 ## Example Usage
 ```
@@ -83,7 +78,7 @@ terraform {
 }
 
 provider "pagerduty" {
-  token = [Api Token]
+  token = "Token token=[Token]"
 }
 data "pagerduty_user_data" "name" {
   id = [userid]
@@ -100,13 +95,10 @@ output "user" {
  output "resource_test" {
    value = pagerduty_user_resource.test1
  }
-
-
 ```
-
 ## Argument Reference
 
-* `email` (string) - The email id associated with the user account.
-* `name` (string) - name of the User.
-* `type` (string) - type of the User.
-* `role` (string) -  Job role of user in organization. 
+* `email` (required,string) - The email id associated with the user account.
+* `name` (required,string) - name of the User.
+* `type` (required,string) - type of the User.
+* `role` (required,string) -  Job role of user in organization. 
