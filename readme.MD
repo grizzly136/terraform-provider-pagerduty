@@ -55,7 +55,7 @@ For eg. `mkdir -p ~/.terraform.d/plugins/hashicorp.com/edu/pagerduty/1.0/windows
 * Update the data of the user file and apply using `terraform apply`. We can change email, name, and role of the user.
 ### Read the User Data
 * To get the data of a user we need user Id. Add user Id in data block id field as shown in the example usage and run basic terraform commands. 
-### Delete the user
+### Delete the User
 * Run `terraform destroy` to delete all the users.
 * We can delete a particular user by commenting out the particular user resource block and run `terraform apply`.
 ### Import User Data
