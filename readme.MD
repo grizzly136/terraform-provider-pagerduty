@@ -8,7 +8,7 @@
 ### setup
 * create a [pagerduty](https://www.pagerduty.com/) developer account
 ### Authentication
-* Api uses the basic token for authentication
+* API uses the basic token for authentication
 * Login to your developer account.
 * In the dashboard go to `Integrations -> Api acess keys -> click on  **create new api key**` <br>
 ## Building The Provider
@@ -17,9 +17,8 @@
  ```
 go mod init terraform-provider-pagerduty
 go mod tidy
+go mod vendor
 ```
-3. Run `go mod vendor` to create a vendor directory that contains all the provider's dependencies. <br>
-
 ## Managing plugins for terraform
 1. Run the following command to create a vendor subdirectory which will comprise of  all provider dependencies. <br>
 ```
@@ -44,15 +43,15 @@ For eg. `mkdir -p ~/.terraform.d/plugins/hashicorp.com/edu/pagerduty/1.0/windows
 ## Working with terraform
 ### application credential integration in terraform
 * In the provider block add api token in the respective field
-### basic terraform commands
+### Basic terraform commands
 * `terraform init` initializes the plugins
 * `terraform plan` suggests if any changes required
 * `terraform apply` executes the code
 ### Create User
-1. Add the user email, name, type and role in the respective field 
+1. To create a user Add the user email, name, type and role in the respective field 
 2. You will see that a user has been successfully created after executing basic terraform commands.
 
-### Update the user
+### Update the User
 Update the data of the user file and apply using `terraform apply`
 
 ### Read the User Data
@@ -60,13 +59,13 @@ Add data and output blocks and run basic terraform commands
 
 ### Delete the user
 Run `terraform destroy` to delete all the users or just comment out the unwated user resource block and run basic terraform commands
-### Import a User Data
+### Import User Data
 1. Write manually a resource configuration block for the User, to which the imported object will be mapped or define the empty resource block.
 2. Run the command `terraform pagerduty_resource_user.import “[USER_ID]”`
-* To get the user Id go to pagerduty dashboard in people select the users then select a particular user in the url last 7 digits will be the user id
+3. To validate Check for the attributes in the `.tfstate` file .
+### naunces
+* To get the user Id go to pagerduty `dashboard -> people -> users -> particular_user`  last 7 digits will be the user id
 eg :  URL:……users/PDFJIJD  here PDFJIJD is the user id of the user
-3. Check for the attributes in the `.tfstate` file and fill them accordingly in the resource block.
-
 ## Example Usage
 ```
 terraform {
@@ -99,7 +98,8 @@ output "user" {
 ```
 ## Argument Reference
 
-* `email` (required,string) - The email id associated with the user account.
-* `name` (required,string) - name of the User.
-* `type` (required,string) - type of the User.
-* `role` (required,string) -  Job role of user in organization. 
+* `email` -(Required)  The email id. we should give the email id of the user we want to create. Type `string`.
+* `name` -(Required)  Name of the User.Type `string`.
+* `type` -(Required)  Type of the User.Type `string`.
+* `role` -(Required)  Job role of user in organization.Type `string`.It can take values `read_only_user, read_only_limited_user, owner, admin, user, observer, limited_user, team_responder, or restricted_access`. 
+-
