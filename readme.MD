@@ -62,7 +62,7 @@ For eg. `mkdir -p ~/.terraform.d/plugins/hashicorp.com/edu/pagerduty/1.0/windows
 * Create a resource block, to which the imported object will be mapped.
 * Run the following command `terraform pagerduty_resource_user.import “[USER_ID]”`
 * To validate Check for the attributes in the `.tfstate` file .
-### Naunces
+### Exceptional cases
 * To get the user Id go to pagerduty `dashboard -> people -> users -> particular_user`  last 7 digits will be the user id
 eg :  URL:……users/PDFJIJD  here PDFJIJD is the user id of the user
 ## Example Usage
