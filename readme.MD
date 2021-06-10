@@ -99,5 +99,5 @@ output "user" {
 
 * `email` -(Required)  The email id. we should give the email id of the user we want to create. Type `string`.
 * `name` -(Required)  Name of the User.Type `string`.
-* `type` -(Required)  Type of the User.Type `string`.
+* `type` -(Required)  Type of the User.Type `string`. `user` is the only value we can give to this field.
 * `role` -(Required)  Job role of the user in the organization.Type `string`.It can take values `read_only_user`, `read_only_limited_user`, `owner`, `admin`, `user`, `observer`, `limited_user`, `team_responder`, or `restricted_access`.
