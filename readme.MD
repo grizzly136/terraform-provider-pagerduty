@@ -10,7 +10,7 @@
 ### Authentication
 * API uses the basic token for authentication
 * Login to your developer account.
-* In the dashboard go to `Integrations -> Api acess keys -> click on  **create new api key**` <br>
+* In the dashboard go to `Integrations -> API acess keys -> click on  **create new API key**` <br>
 ## Building The Provider
 1. Clone the repository "https://github.com/tharunforu/terraform-provider-pagerduty"<br>
 2. Run the following commands :
@@ -41,29 +41,28 @@ For eg. `mkdir -p ~/.terraform.d/plugins/hashicorp.com/edu/pagerduty/1.0/windows
 
 
 ## Working with terraform
-### application credential integration in terraform
-* In the provider block add api token in the respective field
+### Application credential integration in terraform
+* In the provider block add API token in the respective field
 ### Basic terraform commands
 * `terraform init` initializes the plugins
 * `terraform plan` suggests if any changes required
-* `terraform apply` executes the code
+* `terraform apply` implements the code
 ### Create User
-1. To create a user Add the user email, name, type and role in the respective field 
-2. You will see that a user has been successfully created after executing basic terraform commands.
+* To create a user, create a resource block add the user email, name, type and role in the respective field as shown in the example usage 
+* You will see that a user has been successfully created after executing basic terraform commands.
 
 ### Update the User
-Update the data of the user file and apply using `terraform apply`
-
+* Update the data of the user file and apply using `terraform apply`. We can change email, name, and role of the user.
 ### Read the User Data
-Add data and output blocks and run basic terraform commands
-
+* To get the data of a user we need user Id.Add userId in id field as shown in the example usage. Add data and output blocks and run basic terraform commands 
 ### Delete the user
-Run `terraform destroy` to delete all the users or just comment out the unwated user resource block and run basic terraform commands
+* Run `terraform destroy` to delete all the users.
+* We can delete a particular user by commenting out the particular user resource block and run `terraform apply`.
 ### Import User Data
-1. Write manually a resource configuration block for the User, to which the imported object will be mapped or define the empty resource block.
-2. Run the command `terraform pagerduty_resource_user.import “[USER_ID]”`
-3. To validate Check for the attributes in the `.tfstate` file .
-### naunces
+* Write manually a resource configuration block for the User, to which the imported object will be mapped or define the empty resource block.
+* Run the command `terraform pagerduty_resource_user.import “[USER_ID]”`
+* To validate Check for the attributes in the `.tfstate` file .
+### Naunces
 * To get the user Id go to pagerduty `dashboard -> people -> users -> particular_user`  last 7 digits will be the user id
 eg :  URL:……users/PDFJIJD  here PDFJIJD is the user id of the user
 ## Example Usage
