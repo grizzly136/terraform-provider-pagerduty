@@ -59,8 +59,8 @@ For eg. `mkdir -p ~/.terraform.d/plugins/hashicorp.com/edu/pagerduty/1.0/windows
 * Run `terraform destroy` to delete all the users.
 * We can delete a particular user by commenting out the particular user resource block and run `terraform apply`.
 ### Import User Data
-* Write manually a resource configuration block for the User, to which the imported object will be mapped or define the empty resource block.
-* Run the command `terraform pagerduty_resource_user.import “[USER_ID]”`
+* Create a resource block, to which the imported object will be mapped.
+* Run the following command `terraform pagerduty_resource_user.import “[USER_ID]”`
 * To validate Check for the attributes in the `.tfstate` file .
 ### Naunces
 * To get the user Id go to pagerduty `dashboard -> people -> users -> particular_user`  last 7 digits will be the user id
