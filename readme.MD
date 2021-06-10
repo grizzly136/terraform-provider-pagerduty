@@ -42,13 +42,13 @@ For eg. `mkdir -p ~/.terraform.d/plugins/hashicorp.com/edu/pagerduty/1.0/windows
 
 ## Working with terraform
 ### Application credential integration in terraform
-* In the provider block add API token in the respective field
+* In the provider block add API token in the token field as shown in the example usage.
 ### Basic terraform commands
 * `terraform init` initializes the plugins
 * `terraform plan` suggests if any changes required
 * `terraform apply` implements the code
 ### Create User
-* To create a user, create a resource block add the user email, name, type and role in the respective field as shown in the example usage 
+* To create a user, create a resource block add the user email, name, type and role in the respective fields as shown in the example usage 
 * You will see that a user has been successfully created after executing basic terraform commands.
 
 ### Update the User
