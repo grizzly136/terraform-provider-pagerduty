@@ -108,3 +108,11 @@ func (c *Client) DeleteUser(Id string) error {
 	log.Println("[ERROR]: ", res.Status, res.StatusCode)
 	return fmt.Errorf("delete user failed")
 }
+func (c *Client) IsRetry(err error) bool {
+	if err != nil {
+		if strings.Contains(err.Error(), "Too many requests have been made, the rate limit has been reached, StatusCode = 429") == true {
+			return true
+		}
+	}
+	return false
+}

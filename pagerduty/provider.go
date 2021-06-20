@@ -16,7 +16,7 @@ func Provider() *schema.Provider {
 			"token": &schema.Schema{
 				Type:        schema.TypeString,
 				Required:    true,
-				DefaultFunc: schema.EnvDefaultFunc("Token", nil),
+				DefaultFunc: schema.EnvDefaultFunc("PAGERDUTY_TOKEN", nil),
 			},
 		},
 		ResourcesMap: map[string]*schema.Resource{

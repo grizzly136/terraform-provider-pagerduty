@@ -129,12 +129,21 @@ func TestClient_UpdateUser(t *testing.T) {
 	testCases := []struct {
 		testName     string
 		updatedUser  Whole_body
+		new_user     Whole_body
 		expectedResp *Whole_body
 		userID       string
 		expectErr    bool
 	}{
 		{
 			testName: "Update existing user",
+			new_user: Whole_body{
+				User: User{
+					Name:  "Tharun",
+					Type:  "user",
+					Email: "tharunbefore@123test.com",
+					Role:  "admin",
+				},
+			},
 			updatedUser: Whole_body{
 				User: User{
 					Name:  "Tharunafterupdate",
@@ -185,6 +194,11 @@ func TestClient_UpdateUser(t *testing.T) {
 
 			authToken := os.Getenv("token")
 			client := NewClient(authToken)
+
+			if tc.testName == "Update existing user" {
+				re, _ := client.CreateUser(tc.new_user)
+				tc.userID = re.User.Id
+			}
 			_, err := client.UpdateUser(tc.updatedUser, tc.userID)
 			if tc.expectErr {
 				assert.Error(t, err)
@@ -194,6 +208,10 @@ func TestClient_UpdateUser(t *testing.T) {
 			user, err := client.GetUser(tc.userID)
 			assert.NoError(t, err)
 			assert.Equal(t, tc.expectedResp, user)
+			if tc.testName == "Update existing user" {
+				client.DeleteUser(tc.userID)
+
+			}
 		})
 	}
 }

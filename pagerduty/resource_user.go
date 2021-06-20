@@ -4,8 +4,11 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"strings"
 	"terraform-provider-pagerduty/client"
 	"time"
+
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -86,13 +89,29 @@ func resourceUserCreate(ctx context.Context, d *schema.ResourceData, m interface
 			Role:  Role,
 		},
 	}
-	User_response, err := ApiClient.CreateUser(payload_body)
-	if err != nil {
-		log.Println("[CREATE ERROR]: ", err)
-		return diag.Errorf("unable to create user")
+	var err error
+	retryErr := resource.Retry(2*time.Minute, func() *resource.RetryError {
+		User_response, err := ApiClient.CreateUser(payload_body)
+		if err != nil {
+			if ApiClient.IsRetry(err) {
+				return resource.RetryableError(err)
+			}
+			return resource.NonRetryableError(err)
+		}
+
+		d.Set("id", User_response.User.Id)
+		d.SetId(User_response.User.Id)
+		return nil
+	})
+	if retryErr != nil {
+		time.Sleep(2 * time.Second)
+		return diag.FromErr(retryErr)
 	}
-	d.Set("id", User_response.User.Id)
-	d.SetId(User_response.User.Id)
+	if err != nil {
+		log.Println("[UPDATE ERROR]: ", err)
+		return diag.Errorf("unable to update user")
+	}
+
 	resourceUserRead(ctx, d, m)
 	return diags
 }
@@ -104,26 +123,41 @@ func resourceUserRead(ctx context.Context, d *schema.ResourceData, m interface{}
 	ApiClient := m.(*client.Client)
 	Id := d.Id()
 
-	User_response, err := ApiClient.GetUser(Id)
-	if err != nil {
-		log.Println("[READ ERROR]: ", err)
-		return diag.FromErr(err)
-	}
-	d.Set("email", User_response.User.Email)
-	d.Set("name", User_response.User.Name)
-	d.Set("id", User_response.User.Id)
-	d.Set("type", User_response.User.Type)
-	d.Set("role", User_response.User.Role)
-	contact_methods_list := make([]interface{}, len(User_response.User.Contact_methods))
+	retryErr := resource.Retry(2*time.Minute, func() *resource.RetryError {
+		User_response, err := ApiClient.GetUser(Id)
+		if err != nil {
+			if ApiClient.IsRetry(err) {
+				return resource.RetryableError(err)
+			}
+			return resource.NonRetryableError(err)
+		}
 
-	for i, com := range User_response.User.Contact_methods {
-		contact := make(map[string]interface{})
-		contact["type"] = com.Type
-		contact["summary"] = com.Summary
+		d.Set("email", User_response.User.Email)
+		d.Set("name", User_response.User.Name)
+		d.Set("id", User_response.User.Id)
+		d.Set("type", User_response.User.Type)
+		d.Set("role", User_response.User.Role)
+		contact_methods_list := make([]interface{}, len(User_response.User.Contact_methods))
 
-		contact_methods_list[i] = contact
+		for i, com := range User_response.User.Contact_methods {
+			contact := make(map[string]interface{})
+			contact["type"] = com.Type
+			contact["summary"] = com.Summary
+
+			contact_methods_list[i] = contact
+		}
+		d.Set("contact_methods", contact_methods_list)
+
+		return nil
+	})
+	if retryErr != nil {
+		if strings.Contains(retryErr.Error(), "The requested resource was not found.") == true {
+			d.SetId("")
+			return diags
+		}
+		return diag.FromErr(retryErr)
 	}
-	d.Set("contact_methods", contact_methods_list)
+
 	return diags
 }
 
@@ -145,13 +179,28 @@ func resourceUserUpdate(ctx context.Context, d *schema.ResourceData, m interface
 				Role:  Role,
 			},
 		}
-		User_response, err := ApiClient.UpdateUser(payload_body, Id)
+
+		var err error
+		retryErr := resource.Retry(2*time.Minute, func() *resource.RetryError {
+			_, err := ApiClient.UpdateUser(payload_body, Id)
+			if err != nil {
+				if ApiClient.IsRetry(err) {
+					return resource.RetryableError(err)
+				}
+				return resource.NonRetryableError(err)
+			}
+
+			return nil
+		})
+		if retryErr != nil {
+			time.Sleep(2 * time.Second)
+			return diag.FromErr(retryErr)
+		}
 		if err != nil {
 			log.Println("[UPDATE ERROR]: ", err)
 			return diag.Errorf("unable to update user")
 		}
-		d.Set("id", User_response.User.Id)
-		d.SetId(User_response.User.Id)
+
 		d.Set("last_updated", time.Now().Format(time.RFC850))
 	}
 	resourceUserRead(ctx, d, m)
@@ -162,10 +211,41 @@ func resourceUserDelete(ctx context.Context, d *schema.ResourceData, m interface
 	ApiClient := m.(*client.Client)
 	var diags diag.Diagnostics
 	userID := d.Id()
-	err := ApiClient.DeleteUser(userID)
+
+	var err error
+	retryErr := resource.Retry(2*time.Minute, func() *resource.RetryError {
+		if err = ApiClient.DeleteUser(userID); err != nil {
+			if ApiClient.IsRetry(err) {
+				return resource.RetryableError(err)
+			}
+			return resource.NonRetryableError(err)
+		}
+		return nil
+	})
+	if retryErr != nil {
+		time.Sleep(2 * time.Second)
+		return diag.FromErr(retryErr)
+	}
+
 	if err != nil {
 		log.Println("[DELETE ERROR]: ", err)
 		return diag.Errorf("unable to delete user")
 	}
+	d.SetId("")
 	return diags
+}
+func resourceUserImporter(ctx context.Context, d *schema.ResourceData, m interface{}) ([]*schema.ResourceData, error) {
+	id := d.Id()
+	ApiClient := m.(*client.Client)
+	User_response, err := ApiClient.GetUser(id)
+	if err != nil {
+		return nil, err
+	}
+	d.Set("email", User_response.User.Email)
+	d.Set("name", User_response.User.Name)
+	d.Set("id", User_response.User.Id)
+	d.Set("type", User_response.User.Type)
+	d.Set("role", User_response.User.Role)
+	d.SetId(id)
+	return []*schema.ResourceData{d}, nil
 }
