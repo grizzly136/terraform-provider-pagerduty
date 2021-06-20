@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     pagerduty = {
-      version = "1.0"
+      version = "1.0.8"
       source  = "tharun/edu/pagerduty"
     }
   }
